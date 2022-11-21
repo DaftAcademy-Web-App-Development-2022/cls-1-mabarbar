@@ -1,9 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { Fragment } from "react";
 
 import { NextPageWithLayout } from "~/types/common.types";
 
-import { Fragment } from "react";
+import Layout from "~/components/Layout/Layout.component";
 
 const Home: NextPageWithLayout = () => {
   return (
@@ -21,7 +22,7 @@ const Home: NextPageWithLayout = () => {
 };
 
 Home.getLayout = (page) => {
-  return <div>{page}</div>;
+  return <Layout>{page}</Layout>;
 };
 
 export default Home;
