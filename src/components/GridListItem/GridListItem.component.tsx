@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { PlaylistModelWithId } from "~/models/playlist.model";
+import { PlaylistModelWithId } from "../../models/playlist.model";
 import styles from "./GridListItem.module.css";
 
 interface Props {
-  item: PlaylistModelWithId
+  item: PlaylistModelWithId;
 }
 
 const GridListItem = ({ item }: Props) => (
@@ -15,16 +15,13 @@ const GridListItem = ({ item }: Props) => (
         style={{ backgroundColor: item?.color || "#000000" }}
       />
 
-      <Link
-        href={`/playlist/${item.id}`}
-        className={styles.playlistName}
-      >
+      <Link href={`/playlist/${item.id}`} className={styles.playlistName}>
         {item.name}
       </Link>
     </div>
 
     <span className={styles.ownerName}>{item.owner}</span>
   </li>
-)
+);
 
 export default GridListItem;
