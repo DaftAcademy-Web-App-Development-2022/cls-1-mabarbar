@@ -3,6 +3,7 @@ import { Fragment } from "react";
 
 import styles from "./Layout.module.css";
 import { Sidebar } from "~/components";
+import { Player } from "~/components";
 
 interface Props {
   children: React.ReactNode;
@@ -15,7 +16,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
         <Sidebar />
       </header>
       <main className={styles.main}> {children} </main>
-      <footer className={styles.footer}> footer </footer>
+      <footer className={styles.footer}> <Player /> </footer>
     </Fragment>
   );
 };
