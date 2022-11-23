@@ -3,7 +3,7 @@ import { Fragment } from "react";
 
 import styles from "./Layout.module.css";
 import { Sidebar } from "~/components";
-import { Player } from "~/components";
+import { Player } from "~/components"
 
 interface Props {
   children: React.ReactNode;

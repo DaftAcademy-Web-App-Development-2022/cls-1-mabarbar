@@ -1,29 +1,39 @@
-import React, {createContext, useMemo, useReducer, useRef} from "react";
+import React, { createContext, useMemo, useReducer, useRef } from "react";
 
-type Action = {
-  type: "SET_META",
-  payload: Meta
-} | {
-  type: "PLAY"
-} | {
-  type: "PAUSE"
-} | {
-  type: "SET_PROGRESS"
-  payload: number
-} | {
-  type: "SET_CURRENT_TIME"
-  payload: number
-} | {
-  type: "SET_DURATION"
-  payload: number
-}
+type Action =
+  | {
+      type: "SET_META";
+      payload: Meta;
+    }
+  | {
+      type: "PLAY";
+    }
+  | {
+      type: "PAUSE";
+    }
+  | {
+      type: "SET_PROGRESS";
+      payload: number;
+    }
+  | {
+      type: "SET_CURRENT_TIME";
+      payload: number;
+    }
+  | {
+      type: "SET_DURATION";
+      payload: number;
+    }
+  | {
+      type: "MUTE";
+      payload: number;
+    };
 
 type Meta = {
   id?: string;
   src?: string;
   name?: string;
   artists?: string[];
-}
+};
 
 type State = {
   meta?: Meta;
@@ -31,19 +41,22 @@ type State = {
   currentTime: number;
   progress: number;
   duration: number;
-}
+  volume: number;
+};
 
 type Actions = {
   play: (meta?: Meta) => void;
   pause: () => void;
   seek: (time: number) => void;
-}
+  mute: (volume: number) => void;
+};
 
 const initialPlayerState: State = {
   playing: false,
   currentTime: 0,
   progress: 0,
   duration: 0,
+  volume: 100,
 };
 
 const reducer = (state: State, action: Action): State => {
@@ -81,12 +94,22 @@ const reducer = (state: State, action: Action): State => {
       };
     }
 
+    case "MUTE": {
+      return {
+        ...state,
+        volume: action.payload,
+      };
+    }
+
     default:
       return initialPlayerState;
   }
 };
 
-export const PlayerContext = createContext<{ state: State, actions: Actions} | null>(null);
+export const PlayerContext = createContext<{
+  state: State;
+  actions: Actions;
+} | null>(null);
 
 const PlayerProvider = (props: React.PropsWithChildren) => {
   const [state, dispatch] = useReducer(reducer, initialPlayerState);
@@ -123,6 +146,11 @@ const PlayerProvider = (props: React.PropsWithChildren) => {
           playerRef.current.currentTime = time;
         }
       },
+      mute: (volume: number) => {
+        if (playerRef.current) {
+          playerRef.current.volume = volume;
+        }
+      },
     }),
     []
   );
@@ -134,6 +162,7 @@ const PlayerProvider = (props: React.PropsWithChildren) => {
       <PlayerContext.Provider value={value} {...props} />
 
       <audio
+        hidden
         controls
         ref={playerRef}
         onTimeUpdate={() => {
@@ -158,10 +187,14 @@ const PlayerProvider = (props: React.PropsWithChildren) => {
             });
           }
         }}
+        onVolumeChange={() => {
+          if (playerRef.current) {
+            dispatch({ type: "MUTE", payload: playerRef.current.volume });
+          }
+        }}
       />
     </>
-
   );
-}
+};
 
 export default PlayerProvider;
