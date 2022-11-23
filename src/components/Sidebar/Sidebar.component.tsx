@@ -1,6 +1,6 @@
 import React from "react";
 
-import styles from "./SideBar.module.css";
+import styles from "./Sidebar.module.css";
 import { User, Form } from "../index";
 
 import userData from "~/data/userData.json";
