@@ -7,6 +7,7 @@ import playlistData from "~/data/playlistData.json";
 
 import Layout from "~/components/Layout/Layout.component";
 import Main from "~/views/Main/Main.view";
+import Container from "~/components/Container/Container.component";
 
 const Home: NextPageWithLayout = () => {
   return (
@@ -16,9 +17,9 @@ const Home: NextPageWithLayout = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>
+      <Container>
         <Main items={playlistData}></Main>
-      </div>
+      </Container>
     </Fragment>
   );
 };
